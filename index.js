@@ -3,7 +3,32 @@ const dgram = require('dgram');
 const server = dgram.createSocket("udp4");
 const client = dgram.createSocket("udp4");
 const netmask = require('netmask').Netmask;
+const http = require('http');
+const url = require('url');
+const fs = require('fs');
+const path = require('path');
 var broadcastAddresses;
+
+// HTTP SERVER
+
+var express = require('express');
+var app = express();
+app.use(express.static(__dirname));
+app.listen(8080);
+
+// CLIENT
+
+client.on('listening', function () {
+	var address = client.address();
+	console.log('UDP Client listening on ' + address.address + ":" + address.port);
+	client.setBroadcast(true);
+});
+
+client.on('message', function (message, rinfo) {
+	console.log('Message from: ' + rinfo.address + ':' + rinfo.port + ' - ' + message);
+});
+
+client.bind(port);
 
 // SERVER
 
@@ -42,17 +67,3 @@ function getBroadcastAddresses() {
 	});
 	return addrs;
 }
-
-// CLIENT
-
-client.on('listening', function () {
-	var address = client.address();
-	console.log('UDP Client listening on ' + address.address + ":" + address.port);
-	client.setBroadcast(true);
-});
-
-client.on('message', function (message, rinfo) {
-	console.log('Message from: ' + rinfo.address + ':' + rinfo.port + ' - ' + message);
-});
-
-client.bind(port);
