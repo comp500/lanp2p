@@ -16,7 +16,7 @@
 		var textbox = document.getElementById("input");
 		var msgs = document.getElementById("messages");
 		socket.on('recvmsg', function(data) {
-			msgs.innerHTML += data.msg + "<br>";
+			msgs.innerHTML += "<strong>" + data.usr + ":</strong> " + data.msg + "<br>";
 		});
 		
 		socket.on('connect', function() {

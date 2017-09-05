@@ -8,6 +8,7 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const username = require('username');
 var broadcastAddresses;
 var receivedTimes = [];
 
@@ -38,7 +39,8 @@ client.on('message', function (message, rinfo) {
 		receivedTimes.push(parsedMessage.t);
 		console.log('Message from: ' + rinfo.address + ':' + rinfo.port + ' - ' + parsedMessage.m);
 		io.emit('recvmsg', {
-			msg: parsedMessage.m
+			msg: parsedMessage.m,
+			usr: parsedMessage.u
 		});
 	}
 });
@@ -56,7 +58,8 @@ server.bind(function () {
 function broadcastNew(msg) {
 	var objmessage = {
 		t: Date.now(),
-		m: msg
+		m: msg,
+		u: username.sync()
 	};
 	
 	var message = new Buffer(JSON.stringify(objmessage));
