@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/comp500/lanp2p/issues"
   },
-  "homepage": "https://github.com/comp500/lanp2p#readme"
+  "homepage": "https://github.com/comp500/lanp2p#readme",
+  "dependencies": {
+    "netmask": "^1.0.6"
+  }
 }
