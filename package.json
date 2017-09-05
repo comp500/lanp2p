@@ -1,0 +1,19 @@
+{
+  "name": "lanp2p",
+  "version": "1.0.0",
+  "description": "Send data on a local network, with multiple protocols and peer discovery.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comp500/lanp2p.git"
+  },
+  "author": "comp500 and 7coil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/comp500/lanp2p/issues"
+  },
+  "homepage": "https://github.com/comp500/lanp2p#readme"
+}
