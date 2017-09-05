@@ -7,14 +7,24 @@ const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
 var broadcastAddresses;
 
 // HTTP SERVER
 
-var express = require('express');
 var app = express();
+var httpserver = require('http').Server(app);
+var io = require('socket.io')(server);
 app.use(express.static(__dirname));
-app.listen(8080);
+httpserver.listen(8080, "127.0.0.1");
+io.on('connection', function (socket) {
+	socket.emit('recvmsg', {
+		msg: "hi!"
+	});
+	socket.on('sendmsg', function (data) {
+		broadcastNew(data.msg);
+	});
+});
 
 // CLIENT
 
@@ -36,11 +46,10 @@ server.bind(function () {
 	server.setBroadcast(true);
 	broadcastAddresses = getBroadcastAddresses();
 	console.log('UDP Server broadcasting on ' + broadcastAddresses);
-	setInterval(broadcastNew, 3000);
 });
 
-function broadcastNew() {
-	var message = new Buffer("Broadcast message!");
+function broadcastNew(msg) {
+	var message = new Buffer(msg);
 	for (var i = 0; i < broadcastAddresses.length; i++) {
 		server.send(message, 0, message.length, port, broadcastAddresses[i], function () {
 			console.log("Sent '" + message + "'");
