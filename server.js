@@ -1,5 +1,5 @@
 const port = 43653;
-const broadcastAddr = "255.255.255.255";
+const broadcastAddr = "192.168.1.255";
 const dgram = require('dgram');
 const server = dgram.createSocket("udp4");
 
