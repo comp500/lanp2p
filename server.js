@@ -1,7 +1,6 @@
 const port = 43653;
 const dgram = require('dgram');
 const server = dgram.createSocket("udp4");
-const tocidr = require('subnet2cidr').cidrize;
 const netmask = require('netmask').Netmask;
 var broadcastAddresses;
 
