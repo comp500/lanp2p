@@ -75,14 +75,14 @@ function getBroadcastAddresses() {
 	var addrs = [];
 
 	Object.keys(interfaces).forEach(function (key) {
-		var interface = interfaces[key];
-		for (var i = 0; i < interface.length; i++) {
-			if (!interface[i].internal && interface[i].family == "IPv4" && interface[i].netmask && interface[i].address) {
+		var netInterface = interfaces[key];
+		for (var i = 0; i < netInterface.length; i++) {
+			if (!netInterface[i].internal && netInterface[i].family == "IPv4" && netInterface[i].netmask && netInterface[i].address) {
 				var cidr_bits = 0;
-				interface[i].netmask.split('.').forEach(function (octet) {
+				netInterface[i].netmask.split('.').forEach(function (octet) {
 					cidr_bits += ((octet >>> 0).toString(2).match(/1/g) || []).length;
 				});
-				var addr = new netmask(interface[i].address + "/" + cidr_bits);
+				var addr = new netmask(netInterface[i].address + "/" + cidr_bits);
 				addrs.push(addr.broadcast);
 			}
 		}
