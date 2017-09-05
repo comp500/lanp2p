@@ -20,6 +20,7 @@
 		});
 		
 		socket.on('connect', function() {
+			msgs.innerHTML += "<strong>lanp2p ready!</strong><br>";
 			textbox.addEventListener("keydown", function(event) {
 				if (event.keyCode == 13 && textbox.value.length > 0) {
 					socket.emit("sendmsg", {
