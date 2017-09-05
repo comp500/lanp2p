@@ -23,8 +23,17 @@
 		var msgs = document.getElementById("messages");
 		textbox.focus();
 		
+		function escapeHtml(unsafe) {
+			return unsafe
+				.replace(/&/g, "&amp;")
+				.replace(/</g, "&lt;")
+				.replace(/>/g, "&gt;")
+				.replace(/"/g, "&quot;")
+				.replace(/'/g, "&#039;");
+		}
+		
 		socket.on('recvmsg', function(data) {
-			msgs.innerHTML += "<strong>" + data.usr + ":</strong> " + data.msg + "<br>";
+			msgs.innerHTML += "<strong>" + escapeHtml(data.usr) + ":</strong> " + escapeHtml(data.msg) + "<br>";
 		});
 		
 		socket.on('connect', function() {
@@ -35,6 +44,7 @@
 						msg: textbox.value
 					});
 					textbox.value = "";
+					document.body.scrollTop = document.body.scrollHeight;
 				}
 			}, false);
 		});
