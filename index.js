@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 var broadcastAddresses;
+var receivedTimes = [];
 
 // HTTP SERVER
 
@@ -32,10 +33,14 @@ client.on('listening', function () {
 });
 
 client.on('message', function (message, rinfo) {
-	console.log('Message from: ' + rinfo.address + ':' + rinfo.port + ' - ' + message);
-	io.emit('recvmsg', {
-		msg: message.toString()
-	});
+	var parsedMessage = JSON.parse(message);
+	if (receivedTimes.indexOf(parsedMessage.t) == -1) {
+		receivedTimes.push(parsedMessage.t);
+		console.log('Message from: ' + rinfo.address + ':' + rinfo.port + ' - ' + parsedMessage.m);
+		io.emit('recvmsg', {
+			msg: parsedMessage.m
+		});
+	}
 });
 
 client.bind(port);
@@ -49,7 +54,12 @@ server.bind(function () {
 });
 
 function broadcastNew(msg) {
-	var message = new Buffer(msg);
+	var objmessage = {
+		t: Date.now(),
+		m: msg
+	};
+	
+	var message = new Buffer(JSON.stringify(objmessage));
 	for (var i = 0; i < broadcastAddresses.length; i++) {
 		server.send(message, 0, message.length, port, broadcastAddresses[i], function () {
 			console.log("Sent '" + message + "'");
