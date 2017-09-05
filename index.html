@@ -1,1 +1,35 @@
-Test landing page.
+<!doctype html>
+
+<html lang="en">
+
+<head>
+	<title>lanp2p</title>
+</head>
+
+<body>
+	<div id="messages"></div>
+	<input id="input" type="text">
+	
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var socket = io();
+		var textbox = document.getElementById("input");
+		var msgs = document.getElementById("messages");
+		socket.on('recvmsg', function(data) {
+			msgs.innerHTML += data.msg + "<br>";
+		});
+		
+		socket.on('connect', function() {
+			textbox.addEventListener("keydown", function(event) {
+				if (event.keyCode == 13 && textbox.value.length > 0) {
+					socket.emit("sendmsg", {
+						msg: textbox.value
+					});
+					textbox.value = "";
+				}
+			}, false);
+		});
+	</script>
+</body>
+
+</html>

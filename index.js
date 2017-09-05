@@ -14,17 +14,14 @@ var broadcastAddresses;
 
 var app = express();
 var httpserver = require('http').Server(app);
-var io = require('socket.io')(server);
-app.use(express.static(__dirname));
-httpserver.listen(8080, "127.0.0.1");
+var io = require('socket.io')(httpserver);
 io.on('connection', function (socket) {
-	socket.emit('recvmsg', {
-		msg: "hi!"
-	});
 	socket.on('sendmsg', function (data) {
 		broadcastNew(data.msg);
 	});
 });
+app.use(express.static(__dirname));
+httpserver.listen(8080, "127.0.0.1");
 
 // CLIENT
 
@@ -36,6 +33,9 @@ client.on('listening', function () {
 
 client.on('message', function (message, rinfo) {
 	console.log('Message from: ' + rinfo.address + ':' + rinfo.port + ' - ' + message);
+	io.emit('recvmsg', {
+		msg: message.toString()
+	});
 });
 
 client.bind(port);
