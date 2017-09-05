@@ -34,6 +34,7 @@
 		
 		socket.on('recvmsg', function(data) {
 			msgs.innerHTML += "<strong>" + escapeHtml(data.usr) + ":</strong> " + escapeHtml(data.msg) + "<br>";
+			document.body.scrollTop = document.body.scrollHeight;
 		});
 		
 		socket.on('connect', function() {
@@ -44,7 +45,6 @@
 						msg: textbox.value
 					});
 					textbox.value = "";
-					document.body.scrollTop = document.body.scrollHeight;
 				}
 			}, false);
 		});
